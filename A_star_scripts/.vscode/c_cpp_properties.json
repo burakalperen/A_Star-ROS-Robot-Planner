@@ -1,0 +1,31 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/burak/DeliveryRobot/delivery_catkin/devel/include/**",
+        "/home/burak/catkin_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/burak/DeliveryRobot/delivery_catkin/src/comm/include/**",
+        "/home/burak/catkin_ws/src/depthimage_to_laserscan/include/**",
+        "/home/burak/catkin_ws/src/find-object/include/**",
+        "/home/burak/catkin_ws/src/imu_tools/imu_complementary_filter/include/**",
+        "/home/burak/catkin_ws/src/imu_tools/imu_filter_madgwick/include/**",
+        "/home/burak/catkin_ws/src/move_base_python/include/**",
+        "/home/burak/catkin_ws/src/ogretici_paket/include/**",
+        "/home/burak/catkin_ws/src/realsense-ros/realsense2_camera/include/**",
+        "/home/burak/catkin_ws/src/realsense_gazebo_plugin/include/**",
+        "/home/burak/catkin_ws/src/rtabmap_ros/include/**",
+        "/home/burak/catkin_ws/src/turtlebot3_simulations/turtlebot3_fake/include/**",
+        "/home/burak/catkin_ws/src/turtlebot3_simulations/turtlebot3_gazebo/include/**",
+        "/home/burak/catkin_ws/src/turtlebot3/turtlebot3_slam/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}
