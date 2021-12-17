@@ -33,6 +33,7 @@ class Node:
         """
         Apply the given move to current position
         """
+        #print(move)
         theta_new = self.theta + move[1]
         x_new = self.x + math.cos(theta_new) * move[0]
         y_new = self.y + math.sin(theta_new) * move[0]

@@ -37,6 +37,6 @@ class Map:
                     row.append(True)
             self.grid_map.append(row)
 
-
+        print("Grid map len: ",len(self.grid_map))
 if __name__ == "__main__":
     Map()
