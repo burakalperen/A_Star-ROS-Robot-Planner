@@ -59,9 +59,10 @@ class PathPlanner:
                 points.append((step.x, step.y))
 
             # publish this path - safegoto for each of path components
-            points.reverse()
-            points = points[1:]
-            points.append((self.goal.x, self.goal.y))
+            points.reverse() # listeyi append ile oluşturduğumuz için en başta son nokta, en sonda ise ilk nokta var o yüzden ters çeviriyoruz.
+            points = points[1:] # ilk eleman start noktası olduğu için alma
+            points.append((self.goal.x, self.goal.y)) # tolerans ile aldığımız için son nokta hedef nokta değil, o toleransın altında olan nokta, o yüzden hedef noktayı da ekliyoruz.
+            # show all path points
             # for p in range(len(points)):
             #     print("x: ",points[p][0], "y: ",points[p][1])
             
@@ -114,7 +115,6 @@ def a_star(start, end, grid_map):
     final = None
     # heap is a tree-based data structure.
     hq.heappush(opened,(0.0,start))#Heap elements can be tuples. This is useful for assigning comparison values (such as task priorities).Normalde heappush direk en sona ekliyor.
-    #print(opened)
 
     # for other_1,other_2 in opened:
     #     print("other_1: ",other_1)
@@ -124,63 +124,60 @@ def a_star(start, end, grid_map):
     while (final == None) and opened:
         c += 1
         # q is a Node object with x,y,theta
-        #print("Final: ",final)
-        #print("Opened: ",len(opened))
         q = hq.heappop(opened)[1] #heappop delete only first index. [1] means that second element of tuple, so node object.
      
-        if c < 5:
-            print("\nMOVES for'una {}. girisi".format(c))
-            for move in MOVES:
-                print("***********************")
-                print("Move: ",move)
-                print("Nokta(q)--> x:{}  y: {}".format(q.x,q.y))
-                if (q.is_move_valid(grid_map,move)):
-                    print("-> Noktaya move eklendi ve valid.")
-                    next_node = q.apply_move(move)
-                    print("Next_node--> x:{} y:{}".format(next_node.x,next_node.y))
-                    #print("opened: ",opened)
-                else:
-                    print("-> Noktaya move eklendi ama valid degil.")
-                    next_node = None
-                
-                if next_node != None:
-                    if next_node.euclidean_distance(end) < TOLERANCE:
-                        print("-> Next node ile goal arasindaki fark toleranstan az.")
-                        next_node.parent = q
-                        final = next_node
-                        print("-> Ve final next_node'a esitlendi.Dongu kirildi.")
-                        break
-                    #update heuristic h(n) and g(n)
-                    next_node.h = next_node.euclidean_distance(end)
-                    next_node.g = q.g + next_node.euclidean_distance(q)
-                    #f(n) = h(n) + g(n)
-                    next_node.f = G_MULTIPLIER * next_node.g + next_node.h
+        # if c < 4: ##(for debug)
+        #     print("\nMOVES for'una {}. girisi".format(c))
+        for move in MOVES:
+            print("***********************")
+            print("Move: ",move)
+            print("q object name: ",q)
+            print("Nokta(q)--> x:{}  y: {}".format(q.x,q.y))
+            if (q.is_move_valid(grid_map,move)):
+                print("-> Noktaya move eklendi ve valid.")
+                next_node = q.apply_move(move)
+                print("Next_node--> x:{} y:{}".format(next_node.x,next_node.y))
+                #print("opened: ",opened)
+            else:
+                print("-> Noktaya move eklendi ama valid degil.")
+                next_node = None
+            
+            if next_node != None:
+                if next_node.euclidean_distance(end) < TOLERANCE:
+                    print("-> Next node ile goal arasindaki fark toleranstan az.")
                     next_node.parent = q
-                    print("Next_node object: ",next_node)
-                    print("Current next_node.f: ",next_node.f)
+                    final = next_node
+                    print("-> Ve final next_node'a esitlendi.Dongu kirildi.")
+                    break
+                #update heuristic h(n) and g(n)
+                next_node.h = next_node.euclidean_distance(end)
+                next_node.g = q.g + next_node.euclidean_distance(q)
+                #f(n) = h(n) + g(n)
+                next_node.f = G_MULTIPLIER * next_node.g + next_node.h
+                next_node.parent = q
+                print("Next_node object name: ",next_node)
+                print("Current next_node.f: ",next_node.f)
+                print("Parent of q: ",q.parent)
 
-                    # other candidate locations to put in the heap
-                    # potential open şu anki valid olan değerin eklenip path'e(opened heap) eklenip eklenmeyeceğini karar vermede yardımcı olur.
-                    # eğer şu 2 şart varsa eklenmez:
-                    # - opened'a eklenen diğer noktalara benzerliği yüksekse
-                    # - f değeri diğer değerlerden yüksekse
-                    potential_open = any(other_f <= next_node.f and other_next.is_similar(next_node) for other_f, other_next in opened)
-                    print("Potential open : ",potential_open)
 
-                    if not potential_open:
-                        potential_closed = any(other_next.is_similar(next_node) and other_next.f <= next_node.f for other_next in closed)
-                        print("Potential closed: ",potential_closed)
-                        if not potential_closed:
-                            hq.heappush(opened,(next_node.f, next_node))
-                            print("Opened'a pushlandi: ",opened)
+                # other candidate locations to put in the heap
+                potential_open = any(other_f <= next_node.f and other_next.is_similar(next_node) for other_f, other_next in opened)
+                print("Potential open : ",potential_open)
+
+                if not potential_open:
+                    potential_closed = any(other_next.is_similar(next_node) and other_next.f <= next_node.f for other_next in closed)
+                    print("Potential closed: ",potential_closed)
+                    if not potential_closed:
+                        hq.heappush(opened,(next_node.f, next_node))
+                        print("Opened'a pushlandi: ",opened)
         
         
             closed.append(q)
 
-            print("*****************")
-            print("Closed: ",closed)
+            print("\n*****Closed******")
             for other in closed:
-                print("Node.x: {} Node.y: {} Node: ".format(other.x,other.y,other))
+                print("Node name: {} -- Node.x: {} -- Node.y: {}".format(other,other.x,other.y))
+
 
     return final
 

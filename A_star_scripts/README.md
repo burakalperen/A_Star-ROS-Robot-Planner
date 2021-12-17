@@ -18,7 +18,8 @@ For now, tested on binary map image.
 * PathPlanner sınıfının constructorında grid map oluşturuluyor.
 * Ardından mainde sınıfa ait plan metodu çağırılıyor.
 * a_star fonksiyonu ile path oluşturuluyor.
-* Anlamak için Astar Function kısmına bakabiliriz.
+* Anlamak için Astar Function başlığına bakabilirsiniz. bu fonksiyon aşağıda da açıklandığı gibi final değişkenini döndürüyor.
+* Final değişkeni construct_path fonksiyonuna gidiyor.
 
 
 
@@ -59,3 +60,15 @@ Yukarı move döngüsüyle valid olduğu ve opened'a eklenip eklenmeyeceğine ka
 
 Kodda bir if bloğunda o anki next_node'un bitiş noktasına olan uzaklığı ölçülüyor ve eğer tolerans altındaysa bu artık son noktaya varmışız demektir.
 Bu nokta da kod final değişkenini next_node'a eşitleyip, döngüyü kırıyor. 
+
+PERFECT:
+
+Her move döngüsündeki q oluşturduğu next_nodelara kendisini parent olarak veriyor. 
+Bu sayede o döngüde oluşan next nodelardan biri diğer seferde q olduğu için bütün q lar birbirinin parenti oluyor sadece ilk q'nun parenti olmuyor.Start olarak seçildiği için.
+Şöyle bir ihtimal var eğer o q nun oluşturduğu next nodelardan bir eleman değil de daha önceki bir eleman opened'dan seçilirse sıra bozulacak. ?bunu anla
+yani final sadece next_node tolerans altına düşerse ona eşit olacak, o next node diğer q ya, o q next_node iken onu oluşturan q'ya bağlı olacak.
+
+### construct_path Function
+
+fonksiyon sadece final değişkenini alıyor ve önce son node'u bir listeye ekliyor ve ardından onun parentini ekliyor böyle sırayla gidiyor.
+.parent None olana kadar devam ediyor zaten sadece start olarak seçtiğimiz ilk q noktasının parent'i none diğerlerinin hep var.
