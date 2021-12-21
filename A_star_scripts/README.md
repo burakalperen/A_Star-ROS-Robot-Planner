@@ -72,3 +72,4 @@ yani final sadece next_node tolerans altına düşerse ona eşit olacak, o next 
 
 fonksiyon sadece final değişkenini alıyor ve önce son node'u bir listeye ekliyor ve ardından onun parentini ekliyor böyle sırayla gidiyor.
 .parent None olana kadar devam ediyor zaten sadece start olarak seçtiğimiz ilk q noktasının parent'i none diğerlerinin hep var.
+
