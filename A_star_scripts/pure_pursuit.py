@@ -108,6 +108,7 @@ class goto:
 
 
     """
+    # not understood
     def bug(self):
         
         #Method to climb to obstacle by going around it

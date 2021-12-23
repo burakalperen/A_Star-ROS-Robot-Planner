@@ -16,7 +16,6 @@ import copy
 import math
 
 
-
 def radians(degree):
 	return (degree * math.pi / 180)
 
@@ -31,7 +30,6 @@ MOVES = [   (0.2, radians(0)),  # move ahead
 
 
 TOLERANCE = 0.2
-
 
 class PathPlanner:
     def __init__(self,start,theta,goal):
