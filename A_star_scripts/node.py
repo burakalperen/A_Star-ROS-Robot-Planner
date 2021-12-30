@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 
-
-
 import math
-from typing import NamedTuple
 from transformations import world_to_pixel, pixel_to_world, worldtheta_to_pixeltheta
 
 
 SIMILARITY_THRESHOLD = 0.1
-SAFETY_OFFSET = 5 # number of pixels away from the wall the robot should main
+SAFETY_OFFSET = 10 # number of pixels away from the wall the robot should main
 
 
 class Node:
@@ -33,7 +30,6 @@ class Node:
         """
         Apply the given move to current position
         """
-        #print(move)
         theta_new = self.theta + move[1]
         x_new = self.x + math.cos(theta_new) * move[0]
         y_new = self.y + math.sin(theta_new) * move[0]
@@ -47,7 +43,7 @@ class Node:
 
         goal = self.apply_move(move)
         # convert goal coordinates to pixel coordinates before checking data
-        goal_pixel = world_to_pixel((goal.x,goal.y), (700,2000))
+        goal_pixel = world_to_pixel((goal.x,goal.y))
         # check if too close to the walls
         if goal_pixel[0] >= SAFETY_OFFSET and not grid_map[int(goal_pixel[0]-SAFETY_OFFSET)][int(goal_pixel[1])]:
             return False
@@ -66,15 +62,15 @@ class Node:
         Return true if the location on the map is valid, in obstacle free zone
         """
         print("\n********WORLD_TO_PIXEL*********")
-        print("World x: ", self.x, "Pixel y: ",self.y)
-        goal_pixel = world_to_pixel((self.x,self.y),(700,2000))
-        print("Pixel x: ", goal_pixel[0], "Pixel y: ",goal_pixel[1])
+        print("World (x,y): ({},{})".format(self.x,self.y))
+        goal_pixel = world_to_pixel((self.x,self.y))
+        print("Pixel (x,y): ({},{})".format(goal_pixel[0],goal_pixel[1]))
         print("********WORLD_TO_PIXEL*********\n")
 
         # grid mapde her sütun için bir liste bulunuyor
         # bu listelerde her sütundaki satır elemanı için
         print("**********IS_VALID**************")
-        print("Hedef pixel bos mu:  ",grid_map[int(goal_pixel[0])][int(goal_pixel[1])])
+        print("Target pixel valid:  ",grid_map[int(goal_pixel[0])][int(goal_pixel[1])])
         print("**********IS_VALID**************\n")
         
         if grid_map[int(goal_pixel[0])][int(goal_pixel[1])]:
